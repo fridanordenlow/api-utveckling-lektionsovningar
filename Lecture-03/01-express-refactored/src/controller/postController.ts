@@ -27,10 +27,13 @@ export const fetchAllPosts = (req: Request, res: Response) => {
 
   try {
     if (search) {
-      const authorSearch = search.toString().toLowerCase();
+      const searchQuery = search.toString().toLowerCase();
 
-      filteredPosts = filteredPosts.filter((p) =>
-        p.author.toLowerCase().includes(authorSearch.toString())
+      filteredPosts = filteredPosts.filter(
+        (p) =>
+          p.title.toLowerCase().includes(searchQuery) ||
+          p.content.toLowerCase().includes(searchQuery) ||
+          p.author.toLowerCase().includes(searchQuery)
       );
     }
 

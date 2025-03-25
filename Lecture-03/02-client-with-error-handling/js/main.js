@@ -1,4 +1,64 @@
-const todoElement = document.getElementById('todos');
+const postElement = document.getElementById('posts');
+
+document.getElementById('inputState').addEventListener('change', (event) => {
+    const sortValue = event.target.value; // asc or desc
+    const searchQuery = document.getElementById('search').value; // Keep search term if sorting
+
+    fetchPosts(sortValue, searchQuery);
+});
+
+document.getElementById('search').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') { 
+        event.preventDefault();
+        
+        const searchQuery = event.target.value;
+        const sortValue = document.getElementById('inputState').value; // Keep sorting order if searching
+
+        fetchPosts(sortValue, searchQuery);
+    }
+});
+
+
+// Fetch with sorting
+const fetchPosts = async (sortValue, searchQuery) => {
+    try {
+        let url = 'http://localhost:3000/posts';
+        let params = new URLSearchParams();
+
+        if (sortValue) {
+            params.append('sort', sortValue);
+            // url += `?sort=${sortValue}`
+        }
+        if (searchQuery) {
+            params.append('search', searchQuery);
+        }
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.length === 0) {
+            postElement.innerHTML = '<p>Din sökning gav ingen träff.'
+        } else {
+            postElement.innerHTML = data.map(post => 
+                        `<div>
+                            <h1>${post.title}</h1>
+                            <p>${post.content}</p>
+                            <p>${post.author}</p>
+                            <p>Publicerad: ${post.date}</p>
+                        </div>`).join('');
+            console.log(data)
+        }
+    
+    } catch(error) {
+        todoElement.innerHTML = "Sorry, something went wrong. Please try again later!"
+        console.log(error)
+    }
+}
+
+fetchPosts();
 
 // fetch('http://localhost:3000/posts') // Makes the request, returns a Promise 
 // .then((response) => {                // First then-block handles the first Promise - checking if the connection with the API is established
@@ -30,28 +90,28 @@ const todoElement = document.getElementById('todos');
 
 // More popular syntax
 // async/await + try/catch
-const fetchPosts = async () => {
-    try {
-        const response = await fetch('http://localhost:3000/posts');
-        // console.log(response)
-        // if (!response.ok) {
-        //     throw new Error('API is down')
-        // }
+// const fetchPosts = async () => {
+//     try {
+//         const response = await fetch('http://localhost:3000/posts');
+//         // console.log(response)
+//         // if (!response.ok) {
+//         //     throw new Error('API is down')
+//         // }
 
-        const data = await response.json();
+//         const data = await response.json();
     
-        todoElement.innerHTML = data.map(post => 
-                    `<div>
-                        <h1>${post.title}</h1>
-                        <p>${post.content}</p>
-                        <p>${post.author}</p>
-                        <p>Publicerad: ${post.date}</p>
-                    </div>`).join('');
-        console.log(data)
-    } catch(error) {
-        todoElement.innerHTML = "Sorry, something went wrong. Please try again later!"
-        console.log(error)
-    }
-}
+//         todoElement.innerHTML = data.map(post => 
+//                     `<div>
+//                         <h1>${post.title}</h1>
+//                         <p>${post.content}</p>
+//                         <p>${post.author}</p>
+//                         <p>Publicerad: ${post.date}</p>
+//                     </div>`).join('');
+//         console.log(data)
+//     } catch(error) {
+//         todoElement.innerHTML = "Sorry, something went wrong. Please try again later!"
+//         console.log(error)
+//     }
+// }
 
-fetchPosts();
+// fetchPosts();
