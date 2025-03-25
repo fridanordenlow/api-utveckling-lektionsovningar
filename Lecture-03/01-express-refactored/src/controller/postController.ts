@@ -13,7 +13,7 @@ const posts: Post[] = [
     'Kristina Lindh'
   ),
   new Post(
-    'Gör sin tröja till en vän',
+    'Gör din tröja till en vän',
     'Om tröjan tittar uppfordrande på dig kanske du behåller den längre. Det hoppas textilkonstnären Ýr Jóhannsdóttir.',
     'Maria Diedrichs'
   ),
