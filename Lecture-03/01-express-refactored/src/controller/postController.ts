@@ -82,7 +82,7 @@ export const fetchSinglePost = (req: Request, res: Response) => {
     res.status(500).json({ error: `Failed to retrieve post: ${message}` });
   }
 
-  res.json({ post });
+  res.json(post); // Förut stod det ({ post }) som ett objekt, det behöver inte vara ett objekt inom ett annat objekt
 };
 
 export const createPost = (req: Request, res: Response) => {
