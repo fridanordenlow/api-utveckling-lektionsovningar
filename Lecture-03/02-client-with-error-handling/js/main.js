@@ -23,7 +23,11 @@ document.getElementById('search').addEventListener('keydown', (event) => {
 const fetchPosts = async (sortValue, searchQuery) => {
     try {
         let url = 'http://localhost:3000/posts';
-        let params = new URLSearchParams();
+        // let params = new URLSearchParams();
+        let params = new URLSearchParams(document.location.search);
+        // console.log(params.get("author")); 
+        // const currentUrl = window.location.href;
+        // console.log(currentUrl);
 
         if (sortValue) {
             params.append('sort', sortValue);
@@ -47,6 +51,7 @@ const fetchPosts = async (sortValue, searchQuery) => {
                             <h1>${post.title}</h1>
                             <p>${post.content}</p>
                             <p>${post.author}</p>
+                            <span><a href="todo.html?id=${post.id}">Läs mer</a></span> 
                             <p>Publicerad: ${post.date}</p>
                         </div>`).join('');
             console.log(data)
