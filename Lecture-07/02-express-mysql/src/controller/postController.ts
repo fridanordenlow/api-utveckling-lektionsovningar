@@ -22,6 +22,7 @@ import { ResultSetHeader } from 'mysql2';
 //   ),
 // ];
 
+// Figure out sort and search functionality with DB
 export const fetchAllPosts = async (req: Request, res: Response) => {
   // const search = req.query.search;
   // const sort = req.query.sort;

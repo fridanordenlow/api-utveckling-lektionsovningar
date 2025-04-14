@@ -1,10 +1,10 @@
 import express from 'express';
 import {
-  createPost,
-  deletePost,
   fetchAllPosts,
   fetchSinglePost,
+  createPost,
   updatePost,
+  deletePost,
 } from '../controller/postController';
 
 const router = express.Router();
