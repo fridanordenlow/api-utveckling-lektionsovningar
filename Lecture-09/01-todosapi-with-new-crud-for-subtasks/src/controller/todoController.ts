@@ -1,16 +1,11 @@
 import { Request, Response } from 'express';
 import { db } from '../config/db';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
-// import { ITodo } from '../models/ITodo';
 import { ITodoDBResponse } from '../models/ITodoDBResponse';
 
-/**
- * Part of the exercise to figure search and sort functionality out on your own
- */
 export const fetchAllTodos = async (req: Request, res: Response) => {
   const search = req.query.search;
   const sort = req.query.sort;
-  // let filteredTodos = todos;
 
   console.log(search, sort);
   let sql = 'SELECT * FROM todos';
