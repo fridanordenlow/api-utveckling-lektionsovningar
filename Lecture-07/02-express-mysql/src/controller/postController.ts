@@ -67,10 +67,10 @@ export const fetchAllPosts = async (req: Request, res: Response) => {
     // Start working with MySQL through db-variable
     //  const [rows] = await db.query<RowDataPacket[]>('SELECT * FROM posts');
     const [rows] = await db.query<IPost[]>('SELECT * FROM posts');
-    return res.json(rows);
+    res.json(rows);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return res.status(500).json({ error: message });
+    res.status(500).json({ error: message });
   }
 };
 
@@ -91,13 +91,13 @@ export const fetchSinglePost = async (req: Request, res: Response) => {
     const post = rows[0]; // Returnera bara första träffen i arrayen, ska bara finnas en
 
     if (!post) {
-      return res.status(404).json({ message: 'Post not found.' });
+      res.status(404).json({ message: 'Post not found.' });
     }
 
-    return res.json(post);
+    res.json(post);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return res.status(500).json({ error: message });
+    res.status(500).json({ error: message });
   }
 };
 
@@ -105,9 +105,7 @@ export const createPost = async (req: Request, res: Response) => {
   const { title, content, author } = req.body;
 
   if (!title || !content || !author) {
-    return res
-      .status(400)
-      .json({ error: 'Title, content, and author are required' });
+    res.status(400).json({ error: 'Title, content, and author are required' });
   }
 
   try {
@@ -120,10 +118,10 @@ export const createPost = async (req: Request, res: Response) => {
       content,
       author,
     ]);
-    return res.status(201).json({ message: 'Post added', id: result.insertId });
+    res.status(201).json({ message: 'Post added', id: result.insertId });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return res.status(500).json({ error: message });
+    res.status(500).json({ error: message });
   }
 };
 
@@ -133,11 +131,11 @@ export const updatePost = async (req: Request, res: Response) => {
   const updates: Partial<IPost> = req.body;
 
   if (!id) {
-    return res.status(400).json({ error: 'Post not found' });
+    res.status(400).json({ error: 'Post not found' });
   }
 
   if (!updates || Object.keys(updates).length === 0) {
-    return res
+    res
       .status(400)
       .json({ error: 'At least one field must be provided to update' });
   }
@@ -157,13 +155,13 @@ export const updatePost = async (req: Request, res: Response) => {
     const [result] = await db.query<ResultSetHeader>(sql, values);
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Post not found' });
+      res.status(404).json({ message: 'Post not found' });
     }
 
-    return res.json({ message: 'Post updated' });
+    res.json({ message: 'Post updated' });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return res.status(500).json({ error: message });
+    res.status(500).json({ error: message });
   }
 };
 
@@ -180,12 +178,12 @@ export const deletePost = async (req: Request, res: Response) => {
     const [result] = await db.query<ResultSetHeader>(sql, [id]);
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Post not found' });
+      res.status(404).json({ error: 'Post not found' });
     }
 
-    return res.json({ message: 'Post deleted' });
+    res.json({ message: 'Post deleted' });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return res.status(500).json({ error: message });
+    res.status(500).json({ error: message });
   }
 };
